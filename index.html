@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <title>无缝滚动</title>
+    <style>
+        .box{
+            width: 400px;
+            overflow: hidden;
+        }
+        .img-box{
+            display: flex;
+            align-items: flex-start;
+            position: relative;
+            height: 300px;
+        }
+        .img-box img{
+            position: absolute;
+            left: 0;
+            top: 0;
+            transition: all .3s linear;
+        }
+        .img-box img:first-child{
+            z-index: 1;
+        }
+        .current{
+            transform: translateX(0);
+            z-index: 1;
+        }
+        .leave{
+            transform: translateX(-100%);
+        }
+        .enter{
+            transform: translateX(100%);
+        }
+    </style>
+</head>
+<body>
+   <div class="box">
+       <div class="img-box">
+           <img src="images/1.png" alt="图片">
+           <img src="images/2.png" alt="图片">
+           <img src="images/3.png" alt="图片">
+       </div>
+   </div>    
+   
+   <script>
+       $(".img-box img:nth-child(1)").addClass('current').siblings().addClass('enter');
+       var timer = null;
+       var n = 1;
+       x()
+       timer = setInterval(()=>{
+        $(".img-box img:nth-child("+x(n)+")").removeClass('current').addClass('leave').one('transitionend',(e)=>{
+            $(e.currentTarget).removeClass('leave').addClass('enter');
+        })
+        $(".img-box img:nth-child("+x(n+1)+")").removeClass('enter').addClass('current');
+        n++;
+        
+       },3000)
+       function x(n){
+        if(n>3){
+           n= n%3;
+           if(n===0){
+               n=3
+           }
+        }
+        return n;
+       }
+   </script>
+</body>
+</html>
